@@ -1,8 +1,9 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {SERVER_BASE_URL} from "./constants";
 
 const http = axios.create({
-    baseURL: 'http://localhost:8080/mvendor'
+    baseURL: SERVER_BASE_URL
 });
 
 http.defaults.headers.post['Content-Type'] = 'application/json';

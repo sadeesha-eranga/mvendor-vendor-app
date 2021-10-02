@@ -12,6 +12,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContext} from './context';
 import {login, refreshTokens} from "../utils/requests";
 import Loading from "../screens/Loading";
+import RouteDetails from '../screens/RouteDetails';
+import CreateRoute from '../screens/CreateRoute';
+import {Platform, KeyboardAvoidingView} from "react-native";
 
 const Tabs = createBottomTabNavigator();
 const RouteStack = createStackNavigator();
@@ -43,9 +46,19 @@ const AccountStackScreen = () => (
 );
 
 const RouteStackScreen = () => (
+    <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? -30 : 0}
+    >
     <RouteStack.Navigator>
-        <RouteStack.Screen name="Routes" component={Route}/>
+        <RouteStack.Screen name="Routes" component={Route} options={{headerShown: false}}/>
+        <RouteStack.Screen name="CreateRoute" component={CreateRoute}/>
+        <AuthStack.Screen name="Login" component={SignIn} options={{headerShown: false}}/>
+        <RouteStack.Screen name="RouteDetails" component={RouteDetails}
+                           options={({route}) => ({title: route.params.item.name})}/>
     </RouteStack.Navigator>
+    </KeyboardAvoidingView>
 );
 
 const AuthStackScreen = () => (

@@ -1,18 +1,18 @@
 import * as React from 'react';
-import {useContext, useState} from 'react';
-import {Dimensions, ImageBackground, StyleSheet, Text, View} from 'react-native';
-import {Icon, Input,} from "@ui-kitten/components";
-import {TouchableOpacity} from "react-native-gesture-handler";
-import {TouchableWithoutFeedback} from "@ui-kitten/components/devsupport";
-import {AuthContext} from "../navigation/context";
+import { useContext, useState } from 'react';
+import { Dimensions, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { Icon, Input, } from "@ui-kitten/components";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
+import { AuthContext } from "../navigation/context";
 
-export default function SignIn({navigation}) {
+export default function SignIn({ navigation }) {
 
-    const [email, setEmail] = useState('pns@gmail.com');
+    const [email, setEmail] = useState('newpns12345@gmail.com');
     const [password, setPassword] = useState('Vendor@123');
     const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
-    const {signIn} = useContext(AuthContext);
+    const { signIn } = useContext(AuthContext);
 
     const toggleSecureEntry = () => {
         setSecureTextEntry(!secureTextEntry);
@@ -20,30 +20,30 @@ export default function SignIn({navigation}) {
 
     const renderIcon = (props) => (
         <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-            <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}/>
+            <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
         </TouchableWithoutFeedback>
     );
 
     return (
         <ImageBackground source={require('../assets/background-1-yellow.png')}
-                         style={styles.backgroundImage}>
+            style={styles.backgroundImage}>
             <View style={styles.container}>
                 <Text style={styles.title}>Login to Account</Text>
                 <Input autoCapitalize={'none'}
-                       size={'large'}
-                       status={'basic'}
-                       style={styles.input}
-                       placeholder={'Email'}
-                       onChangeText={setEmail}/>
+                    size={'large'}
+                    status={'basic'}
+                    style={styles.input}
+                    placeholder={'Email'}
+                    onChangeText={setEmail} />
                 <Input size={'large'}
-                       status={'basic'}
-                       style={styles.input}
-                       placeholder={'Password'}
-                       onChangeText={setPassword}
-                       accessoryRight={renderIcon}
-                       secureTextEntry={secureTextEntry}/>
+                    status={'basic'}
+                    style={styles.input}
+                    placeholder={'Password'}
+                    onChangeText={setPassword}
+                    accessoryRight={renderIcon}
+                    secureTextEntry={secureTextEntry} />
                 <TouchableOpacity style={styles.btn} onPress={() => signIn(email, password)}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>Login</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Login</Text>
                 </TouchableOpacity>
                 <View style={styles.flexContainer}>
                     <Text style={styles.item}>Not yet registered?</Text>
