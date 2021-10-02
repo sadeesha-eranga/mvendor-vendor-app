@@ -26,12 +26,14 @@ function CreateRouteMap({name, coords, distance, location, setCoords, setDistanc
 
     useEffect(() => {
         if (mapRef && location) {
-            mapRef.animateToRegion({
-                latitude: location.latitude,
-                longitude: location.longitude,
-                latitudeDelta: 0.0030,
-                longitudeDelta: 0.0030,
-            }, 300);
+            setTimeout(() => {
+                mapRef.animateToRegion({
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    latitudeDelta: 0.0030,
+                    longitudeDelta: 0.0030,
+                }, 300);
+            }, 100)
         }
     }, [location, mapRef]);
 
