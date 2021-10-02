@@ -3,10 +3,10 @@ import MapView, {Marker} from "react-native-maps";
 import tw from "tailwind-react-native-classnames";
 import {GOOGLE_MAPS_APIKEY} from "@env";
 import MapViewDirections from "react-native-maps-directions";
-import {Alert, StyleSheet, Text} from "react-native";
+import {Alert} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function CreateRouteMap({name, coords, distance, location, setCoords, setDistance, setLocation}) {
+function CreateRouteMap({coords, location, setCoords, setDistance, setLocation}) {
 
     const [mapRef, setMapRef] = useState(null);
 

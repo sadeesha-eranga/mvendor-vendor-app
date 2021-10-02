@@ -51,13 +51,13 @@ const RouteStackScreen = () => (
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? -30 : 0}
     >
-    <RouteStack.Navigator>
-        <RouteStack.Screen name="Routes" component={Route} options={{headerShown: false}}/>
-        <RouteStack.Screen name="CreateRoute" component={CreateRoute}/>
-        <AuthStack.Screen name="Login" component={SignIn} options={{headerShown: false}}/>
-        <RouteStack.Screen name="RouteDetails" component={RouteDetails}
-                           options={({route}) => ({title: route.params.item.name})}/>
-    </RouteStack.Navigator>
+        <RouteStack.Navigator>
+            <RouteStack.Screen name="Routes" component={Route} options={{headerShown: false}}/>
+            <RouteStack.Screen name="CreateRoute" component={CreateRoute}/>
+            <AuthStack.Screen name="Login" component={SignIn} options={{headerShown: false}}/>
+            <RouteStack.Screen name="RouteDetails" component={RouteDetails}
+                               options={({route}) => ({title: route.params.item.name})}/>
+        </RouteStack.Navigator>
     </KeyboardAvoidingView>
 );
 
@@ -168,7 +168,7 @@ export default () => {
                 dispatch({type: 'SIGN_OUT'})
             },
             signUp: async data => {
-                console.log('signUp')
+                console.log('signUp', data);
                 const {access_token, refresh_token, user} = data;
                 await AsyncStorage.setItem('accessToken', access_token);
                 await AsyncStorage.setItem('refreshToken', refresh_token);

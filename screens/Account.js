@@ -4,7 +4,6 @@ import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {AuthContext} from "../navigation/context";
 
-
 export default function Account() {
 
     const {signOut} = useContext(AuthContext);

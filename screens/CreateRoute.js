@@ -30,12 +30,8 @@ export default function CreateRoute(props) {
                 {
                     text: "Yes",
                     onPress: async () => {
-                        console.log('yes');
                         const userId = await AsyncStorage.getItem('userId');
                         const {0: startingCoordinate, [coords.length - 1]: endingCoordinate} = coords;
-                        console.log(JSON.stringify(coords));
-                        console.log(JSON.stringify(startingCoordinate));
-                        console.log(JSON.stringify(endingCoordinate));
                         const data = {
                             vendorId: userId,
                             name,
@@ -83,10 +79,8 @@ export default function CreateRoute(props) {
         <View>
             <View style={tw`h-5/6 bg-white`}>
                 <CreateRouteMap
-                    name={name}
                     coords={coords}
                     location={location}
-                    distance={distance}
                     setCoords={setCoords}
                     setLocation={setLocation}
                     setDistance={setDistance}
