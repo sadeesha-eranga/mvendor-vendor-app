@@ -46,8 +46,6 @@ export default function SignUp({navigation}) {
                 uri: result.uri
             });
         }
-
-        console.log(image)
     };
 
     useEffect(() => {
@@ -96,7 +94,6 @@ export default function SignUp({navigation}) {
                 profileImage: image.image,
                 imageType: image.fileExtension
             }
-            console.log(data)
             const res = await createAccount(data);
             if (res.data.success) {
                 alert('Account submitted for verification');
