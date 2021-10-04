@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet} from "react-native";
-import {Card, ListItem, Avatar, Icon} from "@ui-kitten/components";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import { StyleSheet } from "react-native";
+import { Avatar, Card, Icon, ListItem } from "@ui-kitten/components";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ItemImage = () => {
     return (<Avatar
@@ -11,11 +11,12 @@ const ItemImage = () => {
     />);
 };
 
-function RouteListItem({item, navigation}) {
+function RouteListItem({navigation, item}) {
+
     return (
         <Card style={styles.card}>
             <TouchableOpacity onPress={() => {
-                navigation.navigate('RouteDetails', {item: item});
+                navigation.navigate('RouteDetails', {item});
             }}>
                 <ListItem
                     style={styles.listItem}

@@ -1,25 +1,44 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Text} from "@ui-kitten/components";
+import { List } from "@ui-kitten/components";
+import http from '../utils/http';
+import NotificationListItem from '../components/NotificationListItem';
+import { View } from 'react-native';
+import tw from 'tailwind-react-native-classnames';
 
-export default function Notifications() {
+export default function Notifications({navigation}) {
 
-    const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
-    const loadNotifications = async () => {
-        try {
-            const notifications = await AsyncStorage.getItem('@notifications');
-            setNotifications(JSON.parse(notifications || []));
-        } catch (e) {
-        }
+  useEffect(() => {
+    loadNotifications().then();
+  }, []);
+
+  const loadNotifications = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      const {data} = await http.get('/api/v1/notifications/vendors/' + userId);
+      if (data.success) {
+        setNotifications(data.notifications);
+      }
+    } catch (e) {
+      console.log(e);
+      if (e.response?.status === 401) {
+        navigation.navigate('Login');
+      }
     }
+  }
 
-    useEffect(() => {
-        loadNotifications();
-    }, []);
-    return (
-        <Text>Hello</Text>
-    );
+  const renderItem = ({item, index}) => (
+    <NotificationListItem navigation={navigation} item={item} index={index}/>
+  );
+
+  return (<View style={tw`bg-white`}>
+    <List
+      style={[tw`h-full bg-white`]}
+      data={notifications}
+      renderItem={renderItem}
+    />
+  </View>);
 }
-

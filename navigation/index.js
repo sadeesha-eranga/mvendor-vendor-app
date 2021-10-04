@@ -15,6 +15,7 @@ import Loading from "../screens/Loading";
 import RouteDetails from '../screens/RouteDetails';
 import CreateRoute from '../screens/CreateRoute';
 import {Platform, KeyboardAvoidingView} from "react-native";
+import Schedules from '../screens/Schedules';
 
 const Tabs = createBottomTabNavigator();
 const RouteStack = createStackNavigator();
@@ -57,6 +58,7 @@ const RouteStackScreen = () => (
             <AuthStack.Screen name="Login" component={SignIn} options={{headerShown: false}}/>
             <RouteStack.Screen name="RouteDetails" component={RouteDetails}
                                options={({route}) => ({title: route.params.item.name})}/>
+            <RouteStack.Screen name="Schedules" component={Schedules}/>
         </RouteStack.Navigator>
     </KeyboardAvoidingView>
 );
