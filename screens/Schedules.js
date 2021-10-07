@@ -30,7 +30,7 @@ export default function Schedules(props) {
   }, []);
 
   const renderItem = ({item, index}) => (
-    <ScheduleListItem navigation={props.navigation} item={item} index={index}/>
+    <ScheduleListItem navigation={props.navigation} _route={props.route.params.item} item={item} index={index}/>
   );
 
   return (<View style={tw`bg-white`}>

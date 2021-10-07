@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {StyleSheet} from "react-native";
 import {Card, ListItem, Avatar, Icon} from "@ui-kitten/components";
 import {TouchableOpacity} from "react-native-gesture-handler";
@@ -12,11 +12,11 @@ const ItemImage = () => {
   />);
 };
 
-function ScheduleListItem({item, navigation}) {
+function ScheduleListItem({item, navigation, _route}) {
   return (
     <Card style={styles.card}>
       <TouchableOpacity onPress={() => {
-        console.log('View schedule details');
+        navigation.navigate('ScheduleDetails', {item, _route});
       }}>
         <ListItem
           style={styles.listItem}
