@@ -43,7 +43,7 @@ export default function Schedules(props) {
         />
       </View>
       <View style={{height: Dimensions.get('window').height / 3}}>
-        <TouchableOpacity style={styles.btn} onPress={() => props.navigation.navigate('CreateSchedule')}>
+        <TouchableOpacity style={styles.btn} onPress={() => props.navigation.navigate('CreateSchedule', {routeId: props.route.params.item.id})}>
           <Text style={{color: 'black', fontWeight: 'bold'}}>Add New Schedule</Text>
         </TouchableOpacity>
       </View>

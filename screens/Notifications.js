@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { List } from "@ui-kitten/components";
+import { List, Text } from "@ui-kitten/components";
 import http from '../utils/http';
 import NotificationListItem from '../components/NotificationListItem';
 import { View } from 'react-native';
@@ -34,11 +34,11 @@ export default function Notifications({navigation}) {
     <NotificationListItem navigation={navigation} item={item} index={index}/>
   );
 
-  return (<View style={tw`bg-white`}>
-    <List
+  return (<View style={tw`bg-white h-full`}>
+    {notifications.length > 0 ? <List
       style={[tw`h-full bg-white`]}
       data={notifications}
       renderItem={renderItem}
-    />
+    /> : <View style={tw`items-center pt-20`}><Text>No notifications</Text></View>}
   </View>);
 }
