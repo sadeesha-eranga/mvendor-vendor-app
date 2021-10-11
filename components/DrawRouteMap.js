@@ -11,7 +11,7 @@ function DrawRouteMap(props) {
     const [mapRef, setMapRef] = useState(null);
 
     useEffect(() => {
-        const route = props.route;
+        const route = props.item;
         setCoords(route?.locationPoints || []);
         setStartLatLon({latitude: route?.startingLatitude, longitude: route?.startingLongitude});
         setEndLatLon({latitude: route?.endingLatitude, longitude: route?.endingLongitude});

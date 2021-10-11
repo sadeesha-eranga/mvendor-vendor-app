@@ -8,7 +8,7 @@ export default function RouteDetails(props) {
   return (
     <View>
       <View style={tw`h-5/6`}>
-        <DrawRouteMap route={props.route.params.item}/>
+        <DrawRouteMap item={props.route.params.item}/>
       </View>
       <View style={tw`h-1/6 bg-white`}>
         <TouchableOpacity style={styles.btn}
