@@ -1,23 +1,33 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import tw from "tailwind-react-native-classnames";
 import { StyleSheet, View } from "react-native";
-import { Button, Icon, Layout, Text } from '@ui-kitten/components';
+import { Button, Layout, Text } from '@ui-kitten/components';
 import moment from 'moment';
+import http from '../utils/http';
 
 export default function ScheduleDetails(props) {
 
-  useEffect(() => {
-    console.log(props);
-  }, []);
+  const changeScheduleStatus = async (status) => {
+    try {
+      const {data} = await http.patch('/api/v1/schedules', {
+        id: props.route.params.item.id,
+        status
+      });
+      console.log(data);
+      if (data.success) {
+        console.log('Status updated');
+      } else {
+        console.log('Something went wrong');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <View>
       <View style={tw`h-3/4 bg-white`}>
         <Text style={[{margin: 20}]} category={'h2'}>{props.route.params._route.name}</Text>
-        {/*<View style={{ flexDirection: 'row' }}>*/}
-        {/*  <Icon name={"clock-outline"}/>*/}
-        {/*  */}
-        {/*</View>*/}
         <Text style={[{marginLeft: 20, marginBottom: 10}]} category={'h6'}>{props.route.params.item.dayOfWeek}</Text>
         <Text style={[{marginLeft: 20, marginBottom: 10}]} category={'h6'}>{`${moment(props.route.params.item.startTime, 'HH:mm:ss')
           .format('LT').toString()} - ${moment(props.route.params.item.endTime, 'HH:mm:ss')
@@ -31,8 +41,12 @@ export default function ScheduleDetails(props) {
         </Button>
 
         <Layout style={styles.container} level='1'>
-          <Button status={'danger'} style={[{width: '48%', height: 60,}]}>Cancel</Button>
-          <Button status={'success'} style={[{width: '48%', height: 60,}]}>Start</Button>
+          <Button status={'danger'}
+                  onPress={() => changeScheduleStatus('INACTIVE')}
+                  style={[{width: '48%', height: 60,}]}>Cancel</Button>
+          <Button status={'success'}
+                  onPress={() => changeScheduleStatus('ACTIVE')}
+                  style={[{width: '48%', height: 60,}]}>Start</Button>
         </Layout>
       </View>
     </View>
