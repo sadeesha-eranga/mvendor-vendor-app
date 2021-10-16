@@ -14,7 +14,7 @@ import {login, refreshTokens} from "../utils/requests";
 import Loading from "../screens/Loading";
 import RouteDetails from '../screens/RouteDetails';
 import CreateRoute from '../screens/CreateRoute';
-import {Platform, KeyboardAvoidingView} from "react-native";
+import { Platform, KeyboardAvoidingView, Alert } from "react-native";
 import Schedules from '../screens/Schedules';
 import CreateSchedule from '../screens/CreateSchedule';
 import ScheduleDetails from '../screens/ScheduleDetails';
@@ -155,9 +155,11 @@ export default () => {
                     userId = user.userId.toString();
                     await AsyncStorage.setItem('accessToken', accessToken);
                     await AsyncStorage.setItem('refreshToken', refreshToken);
+                    await AsyncStorage.setItem('user', JSON.stringify(user));
                     await AsyncStorage.setItem('userId', user.userId.toString());
                 } catch (e) {
                     console.log(e);
+                    Alert.alert("Authentication failed", "Invalid username or password");
                 }
                 dispatch({
                     type: 'SIGN_IN',
