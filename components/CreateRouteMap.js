@@ -16,7 +16,6 @@ function CreateRouteMap({coords}) {
     const {setRouteDistance, setRouteCoords} = useContext(RouteContext);
 
     useEffect(() => {
-        console.log('ccc', coords);
         (async () => {
             try {
                 const curLocationStr = await AsyncStorage.getItem('currentLocation');
@@ -70,7 +69,7 @@ function CreateRouteMap({coords}) {
                 strokeWidth={10}
                 strokeColor="#E6AD00"
                 optimizeWaypoints={false}
-                mode={'WALKING'}
+                mode={'DRIVING'}
                 onReady={result => {
                     console.log('res', result);
                     setRouteDistance(result.distance);

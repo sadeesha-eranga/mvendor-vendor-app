@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import tw from "tailwind-react-native-classnames";
 import { Alert, StyleSheet, View } from "react-native";
 import CreateRouteMap from "../components/CreateRouteMap";
@@ -14,16 +14,16 @@ export default function CreateRoute() {
   const [distance, setDistance] = useState(0);
   const [nameRef, setNameRef] = useState(null);
 
-  const routeContext = React.useMemo(() => ({
-      setRouteDistance: (data) => {
-        setDistance(data);
-      },
-      setRouteCoords: (data) => {
-        const newCoords = coords.concat(data);
-        setCoords(newCoords);
-        console.log('coords', coords);
-      }
-    }), [coords, distance]);
+  const routeContext = useMemo(() => ({
+    setRouteDistance: (data) => {
+      setDistance(data);
+    },
+    setRouteCoords: (data) => {
+      const newCoords = coords.concat(data);
+      setCoords(newCoords);
+      console.log('coords', coords);
+    }
+  }), [coords, distance]);
 
   const saveRoute = () => {
     if (coords.length < 2) {
