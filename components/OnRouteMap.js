@@ -22,12 +22,15 @@ function OnRouteMap(props) {
         console.log('Permission to access location was denied');
       }
     })();
-
-    updateLocation().then();
   }, []);
+
+  useEffect(() => {
+    updateLocation().then();
+  }, [mapRef]);
 
   const updateLocation = async () => {
     try {
+      if (!mapRef) return;
       const location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Lowest
       });

@@ -65,7 +65,8 @@ const RouteStackScreen = () => (
             <RouteStack.Screen name="ScheduleDetails" component={ScheduleDetails}
                                options={{title: 'Schedule details'}}/>
             <RouteStack.Screen name="Schedules" component={Schedules}/>
-            <RouteStack.Screen name="OnRoute" component={OnRoute}/>
+            <RouteStack.Screen name="OnRoute" component={OnRoute}
+                               options={({route}) => ({title: route.params.item.name})}/>
         </RouteStack.Navigator>
     </KeyboardAvoidingView>
 );
