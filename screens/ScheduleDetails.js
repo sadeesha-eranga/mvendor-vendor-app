@@ -16,7 +16,7 @@ export default function ScheduleDetails(props) {
       if (data.success) {
         console.log('Status updated');
         if (status === 'ACTIVE') {
-          props.navigation.navigate('OnRoute', {item: data.route});
+          props.navigation.navigate('OnRoute', {item: data.route, schedule: props.route.params.item});
         }
       } else {
         console.log('Something went wrong');

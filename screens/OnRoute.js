@@ -11,20 +11,20 @@ export default function OnRoute(props) {
 
   const [stopped, setStopped] = useState(false);
 
+  const updateLocation = async () => {
+    let location = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Lowest
+    });
+    console.log('updating location',  location.coords);
+    const vendorId = await AsyncStorage.getItem('userId');
+
+    http.put('/api/v1/vendors/location/', {
+      id: vendorId,
+      ...location.coords
+    }).then().catch(e => console.log(e));
+  };
+
   useEffect(() => {
-    const updateLocation = async () => {
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Lowest
-      });
-      console.log('updating location',  location.coords);
-      const vendorId = await AsyncStorage.getItem('userId');
-
-      http.put('/api/v1/vendors/location/', {
-        id: vendorId,
-        ...location.coords
-      }).then().catch(e => console.log(e));
-    }
-
     const timer = setInterval(() => {
       updateLocation().then();
     }, 5000);
@@ -58,7 +58,7 @@ export default function OnRoute(props) {
   const stopRouting = async () => {
     try {
       const {data} = await http.patch('/api/v1/schedules', {
-        id: props.route.params.item.id,
+        id: props.route.params.schedule.id,
         status: 'PENDING'
       });
       if (data.success) {
@@ -74,7 +74,7 @@ export default function OnRoute(props) {
   return (
     <View>
       <View style={tw`h-5/6`}>
-        <OnRouteMap item={props.route.params.item}/>
+        <OnRouteMap item={props.route.params.item} schedule={props.route.params.schedule}/>
       </View>
       <View style={tw`h-1/6 bg-white`}>
         <TouchableOpacity style={styles.btn}

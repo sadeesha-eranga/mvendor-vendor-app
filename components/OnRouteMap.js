@@ -1,63 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import tw from "tailwind-react-native-classnames";
-import * as Location from 'expo-location';
+import { Image } from 'react-native';
+import http from '../utils/http';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function OnRouteMap(props) {
-  const [coords, setCoords] = useState([]);
-  const [startLatLon, setStartLatLon] = useState({latitude: 0, longitude: 0});
-  const [endLatLon, setEndLatLon] = useState({latitude: 0, longitude: 0});
-  const [mapRef, setMapRef] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
+  const [customers, setCustomers] = useState([]);
 
-  useEffect(() => {
-    const route = props.item;
-    setCoords(route?.locationPoints || []);
-    setStartLatLon({latitude: route?.startingLatitude, longitude: route?.startingLongitude});
-    setEndLatLon({latitude: route?.endingLatitude, longitude: route?.endingLongitude});
-
-    (async () => {
-      let {status} = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    updateLocation().then();
-  }, [mapRef]);
-
-  const updateLocation = async () => {
+  const updateAwaitingCustomers = async () => {
     try {
-      if (!mapRef) return;
-      const location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Lowest
-      });
-      setInitialRegion({
-        ...location.coords,
-        latitudeDelta: 0.0030,
-        longitudeDelta: 0.0030
-      });
-      mapRef.animateToRegion({
-        ...initialRegion
-      });
+      const {data} = await http.get('/api/v1/schedules/customers/' + props.schedule.id);
+      setCustomers(data.customers);
     } catch (e) {
       console.log(e);
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await AsyncStorage.getItem('user');
+        const parsedUser = JSON.parse(user);
+        const {currentLatitude, currentLongitude} = parsedUser.userDetails;
+        setInitialRegion({
+          latitude: currentLatitude,
+          longitude: currentLongitude,
+          latitudeDelta: 0.0030,
+          longitudeDelta: 0.0030
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+
+    const timer = setInterval(() => {
+      updateAwaitingCustomers().then();
+    }, 5000);
+
+    return () => {
+      clearInterval(timer);
+      console.log('Cleared timer');
+    };
+  }, []);
+
   return (
     <MapView
       style={tw`flex-1`}
-      ref={(ref) => {
-        setMapRef(ref);
-      }}
       showsUserLocation={true}
       initialRegion={initialRegion}
-      onRegionChangeComplete={updateLocation}
     >
-
+      {customers.map(customer => (<Marker
+        coordinate={{
+          latitude: customer.latitude,
+          longitude: customer.longitude
+        }}
+        title={'Home'}
+        identifier={'destination'}
+      >
+        <Image source={require('../assets/customer.png')} style={{height: 40, width: 35}}/>
+      </Marker>))}
     </MapView>
   );
 }
