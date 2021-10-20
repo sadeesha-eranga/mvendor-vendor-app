@@ -1,11 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import tw from "tailwind-react-native-classnames";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import OnRouteMap from '../components/OnRouteMap';
 import http from '../utils/http';
+import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function OnRoute(props) {
+
+  const [stopped, setStopped] = useState(false);
+
+  useEffect(() => {
+    const updateLocation = async () => {
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Lowest
+      });
+      console.log('updating location',  location.coords);
+      const vendorId = await AsyncStorage.getItem('userId');
+
+      http.put('/api/v1/vendors/location/', {
+        id: vendorId,
+        ...location.coords
+      }).then().catch(e => console.log(e));
+    }
+
+    const timer = setInterval(() => {
+      updateLocation().then();
+    }, 5000);
+
+    return () => {
+      clearInterval(timer);
+      console.log('Cleared timer');
+    };
+  }, []);
+
+  useEffect(() => {
+    props.navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault();
+      if (!stopped) {
+        setStopped(true);
+        Alert.alert('Stop routing?', 'Do you want to stop current routing session?', [
+          {
+            text: 'Cancel', style: 'cancel', onPress: () => {console.log('Cancelled')}
+          },
+          {
+            text: 'Yes', 'style': 'destructive', onPress: async () => {
+              await stopRouting();
+              props.navigation.dispatch(e.data.action);
+            }
+          }
+        ]);
+      }
+    });
+  }, [props.navigation]);
 
   const stopRouting = async () => {
     try {
@@ -15,7 +63,6 @@ export default function OnRoute(props) {
       });
       if (data.success) {
         alert('Routing stopped');
-        props.navigation.goBack();
       } else {
         alert('Something went wrong');
       }
@@ -31,7 +78,7 @@ export default function OnRoute(props) {
       </View>
       <View style={tw`h-1/6 bg-white`}>
         <TouchableOpacity style={styles.btn}
-                          onPress={stopRouting}>
+                          onPress={props.navigation.goBack}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Stop</Text>
         </TouchableOpacity>
       </View>

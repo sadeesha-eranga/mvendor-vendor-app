@@ -6,6 +6,7 @@ import http from "../utils/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RouteListItem from "../components/RouteListItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { setCurrentLocation } from '../utils/constants';
 
 export default function Route({navigation}) {
 
@@ -26,12 +27,31 @@ export default function Route({navigation}) {
     }
   };
 
+  const checkActiveSchedule = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      const {data} = await http.get('/api/v1/vendors/details/' + userId);
+      if (data.success && data.body.activeScheduleId > 0) {
+        console.log(data.body.activeScheduleId)
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     navigation.addListener('focus', () => fetchRoutes().then());
+    (async () => {
+      try {
+        setCurrentLocation().then();
+        checkActiveSchedule().then();
+      } catch (e) {
+        console.log('Current location fetching error');
+      }
+    })();
   }, []);
 
   const renderItem = ({item}) => (<RouteListItem navigation={navigation} item={item}/>);
-
 
   return (<View style={tw`bg-white`}>
     <View>
