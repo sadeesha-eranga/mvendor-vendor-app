@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, useState } from 'react';
-import { Dimensions, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { Alert, Dimensions, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { Icon, Input, } from "@ui-kitten/components";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
@@ -8,8 +8,8 @@ import { AuthContext } from "../navigation/context";
 
 export default function SignIn({ navigation }) {
 
-    const [email, setEmail] = useState('newpns12345@gmail.com');
-    const [password, setPassword] = useState('Vendor@123');
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
     const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
     const { signIn } = useContext(AuthContext);
@@ -23,6 +23,17 @@ export default function SignIn({ navigation }) {
             <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
         </TouchableWithoutFeedback>
     );
+
+    const handleSignIn = () => {
+        if (!email || email.trim() === '') {
+            Alert.alert('Authentication failed!',  'Please enter valid email');
+            return;
+        } else if (!password || password.trim() === '') {
+            Alert.alert('Authentication failed!',  'Please enter valid password');
+            return;
+        }
+        signIn(email, password);
+    }
 
     return (
         <ImageBackground source={require('../assets/background-1-yellow.png')}
@@ -42,7 +53,7 @@ export default function SignIn({ navigation }) {
                     onChangeText={setPassword}
                     accessoryRight={renderIcon}
                     secureTextEntry={secureTextEntry} />
-                <TouchableOpacity style={styles.btn} onPress={() => signIn(email, password)}>
+                <TouchableOpacity style={styles.btn} onPress={handleSignIn}>
                     <Text style={{ color: 'white', fontWeight: 'bold' }}>Login</Text>
                 </TouchableOpacity>
                 <View style={styles.flexContainer}>
