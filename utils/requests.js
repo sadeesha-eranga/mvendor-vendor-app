@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'querystring';
 import base64 from 'react-native-base64';
-import { SERVER_BASE_URL } from "./constants";
+import { SERVER_BASE_URL } from "@env";
 
 const login = (username, password) => {
   console.log('Logging in', username)
